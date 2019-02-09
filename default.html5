@@ -64,6 +64,11 @@ $if(toc)$
 $table-of-contents$
 </nav>
 $endif$
+
+$if(abstract)$
+<p class="small"><strong>Abstract: </strong><em>$abstract$</em></p>
+$endif$
+
 $body$
 $for(include-after)$
 $include-after$
