@@ -311,9 +311,7 @@ $header-includes$
 $endfor$
 
 %%%%%%%%%% EXTRA PACKAGES %%%%%%%%%%
-% \usepackage[UKenglish,USenglish]{babel}
 \usepackage[autostyle]{csquotes}
-% \MakeOuterQuote{"}
 \usepackage{soul}
 \usepackage{mdwlist}
 \usepackage[shortlabels]{enumitem}
@@ -323,17 +321,9 @@ $endfor$
 \usepackage{fix-cm}
 \usepackage{lettrine}
 \usepackage{epigraph}
-\usepackage{flexisym}
 \usepackage{realscripts}
-% \usepackage[italian=guillemets]{csquotes}
 \usepackage{comment}
-\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
-\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
-\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
-\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
-\definecolor{darkmidnightblue}{rgb}{0.0, 0.2, 0.4}
 \usepackage[hang,flushmargin, stable, multiple]{footmisc}
-% \usepackage{footnotebackref}
 \usepackage{titling}
 \usepackage{footnote}
 \makesavenoteenv{minipage}
@@ -344,6 +334,18 @@ $endfor$
 %%% Small caps for Optima
 \newfontface\smallcapsfont[Scale=0.75,LetterSpace=3.0]{Optima}
 \renewcommand\textsc[1]{{\smallcapsfont \uppercase{#1}}}
+
+%symbol footnote flag, helpful for epigraph note
+\long\def\symbolfootnote[#1]#2{\begingroup\def\thefootnote{\fnsymbol{footnote}}\footnote[#1]{#2}\endgroup}
+
+%% footnote formatting
+\addtolength{\footskip}{0.5cm}
+\setlength{\footnotemargin}{0.3cm}
+\setlength{\footnotesep}{0.4cm}
+
+%% header & epigraph
+\setlength{\headheight}{15pt}
+\setlength{\epigraphwidth}{.8\textwidth}
 
 $if(lang)$
 \ifnum 0\ifxetex 1\fi=0 % if pdftex or luatex
