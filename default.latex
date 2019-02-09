@@ -309,6 +309,42 @@ $endif$
 $for(header-includes)$
 $header-includes$
 $endfor$
+
+%%%%%%%%%% EXTRA PACKAGES %%%%%%%%%%
+% \usepackage[UKenglish,USenglish]{babel}
+\usepackage[autostyle]{csquotes}
+% \MakeOuterQuote{"}
+\usepackage{soul}
+\usepackage{mdwlist}
+\usepackage[shortlabels]{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{type1cm} % scalable fonts
+\usepackage{fix-cm}
+\usepackage{lettrine}
+\usepackage{epigraph}
+\usepackage{flexisym}
+\usepackage{realscripts}
+% \usepackage[italian=guillemets]{csquotes}
+\usepackage{comment}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
+\definecolor{darkmidnightblue}{rgb}{0.0, 0.2, 0.4}
+\usepackage[hang,flushmargin, stable, multiple]{footmisc}
+% \usepackage{footnotebackref}
+\usepackage{titling}
+\usepackage{footnote}
+\makesavenoteenv{minipage}
+\usepackage{manyfoot}
+\DeclareNewFootnote{A}[fnsymbol]
+\usepackage{relsize}
+
+%%% Small caps for Optima
+\newfontface\smallcapsfont[Scale=0.75,LetterSpace=3.0]{Optima}
+\renewcommand\textsc[1]{{\smallcapsfont \uppercase{#1}}}
+
 $if(lang)$
 \ifnum 0\ifxetex 1\fi=0 % if pdftex or luatex
   \usepackage[shorthands=off,$for(babel-otherlangs)$$babel-otherlangs$,$endfor$main=$babel-lang$]{babel}
@@ -348,25 +384,40 @@ $for(bibliography)$
 $endfor$
 $endif$
 
+%%%%% TITLE & HEADER VARIABLES
+
 $if(title)$
-\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+\pretitle{\begin{flushleft}\huge}
+\title{\textbf{$title$$if(thanks)$\thanks{$thanks$}$endif$$if(subtitle)$\\[-0.3em]\smaller[2]$subtitle$$endif$}}
+\posttitle{\par\end{flushleft}}
+\setlength{\droptitle}{-80pt}
 $endif$
-$if(subtitle)$
-$if(beamer)$
-$else$
-\usepackage{etoolbox}
-\makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
-  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
-}
-\makeatother
-$endif$
-\subtitle{$subtitle$}
-$endif$
+
+% make the following work even when paper is blinded for review/refereeing
 $if(author)$
-\author{$for(author)$$author$$sep$ \and $endfor$}
+\preauthor{\begin{flushleft}\Large}
+  $if(affiliation)$
+  \author{$for(author)$$author$$sep$ \and $endfor$
+    \newline\footnotesize{$affiliation$}
+    \newline\footnotesize{$authoremail$}
+    $if(website)$
+    \newline\footnotesize{$website$}
+    $endif$}
+  $else$
+  \author{$for(author)$$author$$sep$ \and $endfor$}
+  $endif$
+\postauthor{\par\end{flushleft}} 
 $endif$
-\date{$date$}
+
+$if(date)$
+\predate{\begin{flushleft}\footnotesize}
+\date{$date$
+  $if(publication)$\newline\footnotesize{$publication$}$endif$}
+    \postdate{\par\end{flushleft}}
+$else$
+  \date{}
+$endif$
+
 $if(beamer)$
 $if(institute)$
 \institute{$for(institute)$$institute$$sep$ \and $endfor$}
@@ -378,6 +429,9 @@ $if(logo)$
 \logo{\includegraphics{$logo$}}
 $endif$
 $endif$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \begin{document}
 $if(title)$
@@ -424,6 +478,47 @@ $endif$
 $if(lof)$
 \listoffigures
 $endif$
+
+%% Catchy quote
+$for(quote)$
+$if(quote)$
+\bigskip
+\epigraph{$quote.content$}{$quote.title$\\\textsc{$quote.author$}}
+\smallskip
+$endif$
+$endfor$
+
+%%%%%% Page style %%%%%%%%
+\pagestyle{fancy}
+$if(lhead)$\lhead{$lhead$}
+$else$
+\lhead{\thetitle}
+$endif$
+\chead{}
+$if(rhead)$\rhead{$rhead$}
+$else$
+\rhead{\theauthor}
+$endif$
+$if(lfoot)$\lfoot{\footnotesize{$lfoot$}}$else$\lfoot{\footnotesize{$date$}}$endif$
+$if(cfoot)$\cfoot{$cfoot$}$else$\cfoot{}$endif$
+% $if(cfoot)$\cfoot{$cfoot$}$else$\cfoot{\footnotesize \thepage\ | \pageref{LastPage}}$endif$
+% $if(rfoot)$\rfoot{$rfoot$}$else$\rfoot{}$endif$
+$if(rfoot)$\rfoot{$rfoot$}$else$\rfoot{\footnotesize \thepage\ | \pageref{LastPage}}$endif$
+\fancypagestyle{firststyle}
+{
+  \fancyhf{}
+  % $if(cfoot)$\cfoot{$cfoot$}$else$\cfoot{\footnotesize \thepage\ | \pageref{LastPage}}$endif$
+  $if(rfoot)$\rfoot{$rfoot$}$else$\rfoot{\footnotesize \thepage\ | \pageref{LastPage}}$endif$
+  \renewcommand{\headrulewidth}{0pt}
+}
+\thispagestyle{firststyle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$if(introduction)$
+\phantomsection
+\addcontentsline{toc}{section}{Introduction}
+$endif$
+
 $body$
 
 $if(natbib)$
