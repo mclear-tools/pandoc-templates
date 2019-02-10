@@ -121,23 +121,46 @@ $endif$
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\newcommand{\subtitle}[1]{
-  \gdef\@subtitle{#1}
+%%%%% TITLE & HEADER VARIABLES
+\usepackage{titling}
+\providecommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\upshape\Large#1\end{flushleft}}
 }
-% title / author / date
+
 $if(title)$
+\pretitle{\begin{flushleft}\scshape\LARGE}
 \title{$title$}
+\posttitle{\par\end{flushleft}}
+\setlength{\droptitle}{-40pt}
 $endif$
 $if(subtitle)$
 \subtitle{$subtitle$}
 $endif$
+
+% make the following work even when paper is blinded for review/refereeing
 $if(author)$
-\author{$for(author)$$author$$sep$ \and $endfor$}
+\preauthor{\begin{flushleft}\large}
+  $if(affiliation)$
+  \author{$for(author)$$author$$sep$ \and $endfor$
+    \newline\small{$affiliation$}
+    \newline\small{$authoremail$}
+    $if(website)$
+    \newline\small{$website$}
+    $endif$}
+  $else$
+  \author{$for(author)$$author$$sep$ \and $endfor$}
+  $endif$
+\postauthor{\par\end{flushleft}} 
 $endif$
+
 $if(date)$
-\date{$date$}
+\predate{\begin{flushleft}\small}
+\date{$date$
+  $if(publication)$\newline\small{$publication$}$endif$}
+    \postdate{\par\end{flushleft}}
 $else$
-\date{}
+  \date{}
 $endif$
 
 \usepackage{fancyhdr}
