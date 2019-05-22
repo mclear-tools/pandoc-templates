@@ -1,0 +1,105 @@
+\documentclass[12pt,stdletter,orderfromtodate,sigleft,dateleft]{newlfm}
+% Palatino for rm and math | Helvetica for ss | Courier for tt
+\usepackage{mathpazo} % math & rm
+\linespread{1.05}        % Palatino needs more leading (space between lines)
+\usepackage[scaled]{helvet} % ss
+\usepackage{courier} % tt
+\normalfont
+\usepackage[T1]{fontenc}
+
+%% Times for rm and math | Helvetica for ss | Courier for tt
+% \usepackage{mathptmx} % rm & math
+% \usepackage[scaled=0.90]{helvet} % ss
+% \usepackage{courier} % tt
+% \normalfont
+% \usepackage[T1]{fontenc}
+
+% $if(fontfamily)$
+% \usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
+% $else$
+% \usepackage{charter} % Use the Charter font for the document text
+%$endif$
+
+\widowpenalty=10000
+\clubpenalty=10000
+\usepackage{graphicx}
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0.0,0.0,.5}
+%% hyperlinks
+\usepackage[xetex, 
+	colorlinks=true,
+	urlcolor=darkblue,
+  linkcolor=darkblue, plainpages=false,   	
+  	]{hyperref}
+
+%% Fix undefined control sequence error
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\@zfancyhead}{\fancy@reset}{\f@nch@reset}{}{}
+\patchcmd{\@set@em@up}{\f@ncyolh}{\f@nch@olh}{}{}
+\patchcmd{\@set@em@up}{\f@ncyolh}{\f@nch@olh}{}{}
+\patchcmd{\@set@em@up}{\f@ncyorh}{\f@nch@orh}{}{}
+\makeatother
+
+% \newlfmP{dateskipbefore=50pt}
+\newlfmP{headermarginskip=10pt}
+\newlfmP{sigsize=0pt}
+\newlfmP{sigskipbefore=15pt}
+\newlfmP{Headlinewd=.75pt,Footlinewd=0pt}
+\newlfmP{addrfromphone} % Print a phone number under the sender's address
+\newlfmP{addrfromemail} % Print an email address under the sender's address
+
+\makeatletter
+\let\ps@othhead\ps@empty
+\makeatother
+
+\PhrPhone{Phone} % Customize the "Telephone" text
+\PhrEmail{Email} % Customize the "E-mail" text
+
+% %& LOGO
+\newsavebox{\Lunl}\sbox{\Lunl}{\parbox[b]{1.75in}{\vspace{0.5in} \includegraphics[width=1.2\linewidth]{logo.png}}} % Company/institution logo at the top left of the page
+\makeletterhead{Unl}{\Lheader{\usebox{\Lunl}}}
+\lthUnl % Print the company/institution logo
+
+%----------------------------------------------------------------------------------------
+%	YOUR NAME AND CONTACT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\namefrom{$author$}
+\addrfrom{$from$}
+$if(date)$
+\dateset{$date$}
+$else$
+\dateset{\today}
+$endif$
+$if(phone)$
+\phonefrom{$phone$} % Phone number
+$else$
+\phonefrom{(607) 379--9604} % Phone number
+$endif$
+$if(email)$
+\emailfrom{\href{mailto:$email$}{$email$}} % Email address
+$else$
+\emailfrom{\href{mailto:mclear@unl.edu}{mclear@unl.edu}} % Email address
+$endif$
+%----------------------------------------------------------------------------------------
+%	ADDRESSEE AND GREETING/CLOSING
+%----------------------------------------------------------------------------------------
+\nameto{$toname$} % Addressee of the letter above the to address
+\addrto{$toaddress$}
+
+\greetto{$greeting$}
+\closeline{Sincerely yours, \newline \newline \fromsig{\includegraphics[scale=1.5]{Signature.png}}} % Closing text
+
+% \newlfmP{noLines}
+
+\begin{document}
+
+\begin{newlfm}
+
+  $body$
+
+\end{newlfm}
+
+\end{document}
