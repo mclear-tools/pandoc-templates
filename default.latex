@@ -347,6 +347,10 @@ $endfor$
 \setlength{\headheight}{15pt}
 \setlength{\epigraphwidth}{.8\textwidth}
 
+%% Widows and Orphans
+\widowpenalty=4000
+\clubpenalty=4000
+
 $if(lang)$
 \ifnum 0\ifxetex 1\fi=0 % if pdftex or luatex
   \usepackage[shorthands=off,$for(babel-otherlangs)$$babel-otherlangs$,$endfor$main=$babel-lang$]{babel}
@@ -392,22 +396,20 @@ $if(title)$
 \pretitle{\begin{flushleft}\huge}
 \title{\textbf{$title$$if(thanks)$\thanks{$thanks$}$endif$$if(subtitle)$\\[-0.3em]\smaller[2]$subtitle$$endif$}}
 \posttitle{\par\end{flushleft}}
-\setlength{\droptitle}{-80pt}
+\setlength{\droptitle}{-60pt}
 $endif$
 
 % make the following work even when paper is blinded for review/refereeing
 $if(author)$
-\preauthor{\begin{flushleft}\Large}
-  $if(affiliation)$
-  \author{$for(author)$$author$$sep$ \and $endfor$
+\preauthor{\begin{flushleft}\Large\vspace{0.05in}}
+  \author{$for(author)$$author$\vspace{0.05in}
     \newline\footnotesize{$affiliation$}
-    \newline\footnotesize{$authoremail$}
-    $if(website)$
-    \newline\footnotesize{$website$}
-    $endif$}
-  $else$
-  \author{$for(author)$$author$$sep$ \and $endfor$}
-  $endif$
+    \newline\footnotesize{$authoremail$}\vspace*{0.05in} $sep$ \and $endfor$}
+\postauthor{\par\end{flushleft}} 
+
+$else$
+\preauthor{\begin{flushleft}\Large}
+\author{}
 \postauthor{\par\end{flushleft}} 
 $endif$
 
@@ -444,7 +446,7 @@ $else$
 $endif$
 $if(abstract)$
 \begin{abstract}
-$abstract$
+\noindent $abstract$
 \end{abstract}
 $endif$
 $endif$
@@ -496,10 +498,14 @@ $if(lhead)$\lhead{$lhead$}
 $else$
 \lhead{\thetitle}
 $endif$
+$if(chead)$
+\chead{$chead$}
+$else$
 \chead{}
+$endif$
 $if(rhead)$\rhead{$rhead$}
 $else$
-\rhead{\theauthor}
+\rhead{Colin McLear}
 $endif$
 $if(lfoot)$\lfoot{\footnotesize{$lfoot$}}$else$\lfoot{\footnotesize{$date$}}$endif$
 $if(cfoot)$\cfoot{$cfoot$}$else$\cfoot{}$endif$
